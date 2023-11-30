@@ -1,4 +1,5 @@
-# Reddit-Auto-Post
+# Reddit-Auto-Post ![Reddit](https://seeklogo.com/images/R/reddit-logo-23F13F6A6A-seeklogo.com.png){:height="35px" width="35px" align-items=}.
+
 
 ##Descripción
 Proyecto creado con el proposito de automatizar publicaciones en Reddit, agilizando la gestión de contenidos con facilidad y eficacia.
