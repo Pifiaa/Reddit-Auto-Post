@@ -24,6 +24,12 @@ clean:
 	rm ${BINARY_NAME}-linux
 	rm ${BINARY_NAME}-windows
 
+
 # Este comando crea las tablas en la base de datos
 migrate-up:
 	cd ./internal/database/migration && goose mysql "root:@/test?parseTime=true" up
+
+
+# Este comando elimina las tablas de la base de datos	
+migrate-down:
+	cd ./internal/database/migration && goose mysql "root:@/test?parseTime=true" reset
