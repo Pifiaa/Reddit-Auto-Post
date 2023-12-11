@@ -23,3 +23,7 @@ clean:
 	rm ${BINARY_NAME}-darwin
 	rm ${BINARY_NAME}-linux
 	rm ${BINARY_NAME}-windows
+
+# Este comando crea las tablas en la base de datos
+migrate-up:
+	cd ./internal/database/migration && goose mysql "root:@/test?parseTime=true" up
