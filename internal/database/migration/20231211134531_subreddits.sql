@@ -1,10 +1,10 @@
 -- +goose Up
-CREATE TABLE Subreddits {
+CREATE TABLE Subreddits (
     id int NOT NULL,
-    name varchar,
-    url varchar,
+    name varchar(255),
+    url varchar(255),
     PRIMARY KEY(id)
-} 
+) 
 -- +goose StatementBegin
 -- +goose StatementEnd
 
