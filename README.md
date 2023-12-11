@@ -17,4 +17,7 @@ Proyecto creado con el proposito de automatizar publicaciones en Reddit, agiliza
 
 ## Inicializar la aplicación localmente
 1. Clonar el repositorio
+ ```bash   
+    git clone https://github.com/Pifiaa/Reddit-Auto-Post.git
+```
 
