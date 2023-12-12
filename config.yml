@@ -1,0 +1,13 @@
+project:
+  name: reddit-auto-post
+
+server:
+  host: localhost
+  port: 8000
+
+database:
+  host: localhost
+  port: 3306
+  username: root
+  password: 
+  name: test
