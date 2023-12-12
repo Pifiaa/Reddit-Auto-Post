@@ -30,4 +30,5 @@ Este es un comando utilizado para descargar los módulos necesarios para constru
 
 ### Paquetes y herramientas instalados
 * [gin-gonic](https://gin-gonic.com/es/): Gin-gonic es un framework web para Go. Ayuda a construir aplicaciones web y APIs de manera más fácil en el lenguaje de programación Go.
+* [viper](https://github.com/spf13/viper): Viper es una librería de configuración para Go (Golang). Te permite manejar la configuración de tu aplicación de forma sencilla y flexible, con soporte para diferentes formatos de archivos y fuentes de configuración.
 * [goose](https://github.com/pressly/goose) - Goose es una Herramienta para gestionar cambios estructurales en bases de datos de manera ordenada.
