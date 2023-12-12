@@ -2,13 +2,18 @@ package config
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 
 	"github.com/spf13/viper"
 )
 
 func InitializeConfig() (bool, error) {
+	dir, _ := os.Getwd()
+	rootDir := filepath.Join(dir, "..", "..")
+
 	viper.SetConfigName("config")
-	viper.AddConfigPath(".")
+	viper.AddConfigPath(rootDir)
 	viper.AutomaticEnv()
 	viper.SetConfigType("yml")
 	err := viper.ReadInConfig()
