@@ -33,3 +33,8 @@ migrate-up:
 # Este comando elimina las tablas de la base de datos	
 migrate-down:
 	cd ./internal/database/migration && goose mysql "root:@/test?parseTime=true" reset
+
+#Este comando crea el archivo de migrciones 
+# ej: make create TABLE=ejemplo
+create :
+	cd ./internal/database/migration && goose create $(TABLE) sql
