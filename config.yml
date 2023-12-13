@@ -11,3 +11,7 @@ database:
   username: root
   password: 
   name: test
+
+reddit:
+  url: https://www.reddit.com/api/v1
+  oauth: https://oauth.reddit.com/api/v1
