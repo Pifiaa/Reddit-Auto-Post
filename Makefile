@@ -13,8 +13,8 @@ build:
 
 
 #Este comando compila y ejecuta el programa en un solo paso. En lugar de generar un archivo ejecutable por separado.
-run: build
-	./${BINARY_NAME}
+run: 
+	cd ./cmd/app && go run main.go
 
 
 # Este comando se utiliza para eliminar archivos y directorios generados durante la compilación y construcción del proyecto.
