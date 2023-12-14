@@ -1,34 +1,16 @@
 package routes
 
 import (
-	"RedditAutoPost/api/handler"
-	"RedditAutoPost/config"
-	"fmt"
+	"RedditAutoPost/internal/handler"
 
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRouter() *gin.Engine {
-	isConfigEnable, err := config.InitializeConfig()
+func Routes(route *gin.Engine) {
 
-	if !isConfigEnable {
-		fmt.Println("Error:", err)
-	}
-
-	route := gin.Default()
-
-	routes(route)
-
-	return route
-}
-
-func routes(route *gin.Engine) {
-
-	redditGroup := route.Group("/v1")
+	redditGroup := route.Group("/api/v1")
 	{
-		redditGroup.POST("/access_token", handler.GetAccessToken)
+		redditGroup.POST("/access-token", handler.GetAccessToken)
 		redditGroup.POST("/post", handler.CreatePost)
-
-		//redditGroup.POST("upload", handler.PopulateSubReddits)
 	}
 }
