@@ -1,7 +1,10 @@
 package subreddit
 
+import "gorm.io/gorm"
+
 type subreddit struct {
-	id   int    `json:"id"`
-	name string `json:"name"`
-	url  string `json:"url"`
+	gorm.Model
+	id   int    `json:"id" gorm:AUTO_INCREMENT;"primaryKey"`
+	name string `json:"name" gorm:"not null"`
+	url  string `json:"url" gorm:"not null"`
 }
