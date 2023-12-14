@@ -4,36 +4,29 @@ import (
 	"RedditAutoPost/config"
 	"database/sql"
 	"fmt"
-	"log"
 
-	"github.com/go-sql-driver/mysql"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 var connection *sql.DB
 
-func Connect() (*sql.DB, error) {
+func Connect() (*gorm.DB, error) {
 
-	dsn := mysql.Config{
-		AllowNativePasswords: true,
-		Net:                  "tcp",
-		DBName:               config.GetEnv("database.name"),
-		User:                 config.GetEnv("database.username"),
-		Passwd:               config.GetEnv("database.password"),
-		Addr:                 fmt.Sprintf("%s:%s", config.GetEnv("database.host"), config.GetEnv("database.port")),
-	}
+	addr := fmt.Sprintf("%s:%s", config.GetEnv("database.host"), config.GetEnv("database.port"))
+	dsn := fmt.Sprintf(
+		"%s:%s@tcp(%s)%s/?charset=utf8&parseTime=True&loc=Local",
+		config.GetEnv("database.username"),
+		config.GetEnv("database.password"),
+		addr,
+		config.GetEnv("database.name"),
+	)
 
-	connection, err := sql.Open("mysql", dsn.FormatDSN())
+	connection, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		return nil, err
 	}
-
-	pingErr := connection.Ping()
-	if pingErr != nil {
-		log.Fatal(pingErr)
-	}
-
-	fmt.Println("Connected!")
 
 	return connection, nil
 }
