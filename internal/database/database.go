@@ -12,29 +12,37 @@ var db *gorm.DB // Cambia el nombre de la variable a algo más descriptivo
 
 // Connect inicializa una conexión a la base de datos y devuelve una instancia de Gorm DB.
 func Connect() (*gorm.DB, error) {
+	user := config.GetEnv("database.username")
+	password := config.GetEnv("database.password")
+	database := config.GetEnv("database.name")
 	addr := fmt.Sprintf("%s:%s", config.GetEnv("database.host"), config.GetEnv("database.port"))
-	dsn := fmt.Sprintf(
-		"%s:%s@tcp(%s)%s/?charset=utf8&parseTime=True&loc=Local",
-		config.GetEnv("database.username"),
-		config.GetEnv("database.password"),
-		addr,
-		config.GetEnv("database.name"),
-	)
 
+	var dsn string
+	if password != "" {
+		dsn = fmt.Sprintf(
+			"%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
+			user,
+			password,
+			addr,
+			database,
+		)
+	} else {
+		dsn = fmt.Sprintf(
+			"%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
+			user,
+			addr,
+			database,
+		)
+	}
+
+	fmt.Println(dsn)
 	connection, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return nil, fmt.Errorf("falló la conexión a la base de datos: %v", err)
 	}
 
-	// Configurar y establecer un pool de conexiones si es necesario
-	sqlDB, err := connection.DB()
-	if err != nil {
-		return nil, fmt.Errorf("falló al obtener la instancia de la base de datos: %v", err)
-	}
-	sqlDB.SetMaxIdleConns(10)  // Ajustar según sea necesario
-	sqlDB.SetMaxOpenConns(100) // Ajustar según sea necesario
-
 	db = connection // Asignar la instancia de la base de datos a la variable del paquete
+	fmt.Println("Conexión a la base de datos establecida")
 
 	return connection, nil
 }
