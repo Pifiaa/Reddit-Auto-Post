@@ -1,8 +1,8 @@
 -- +goose Up
 CREATE TABLE Subreddits (
-    id int NOT NULL,
-    name varchar(255),
-    url varchar(255),
+    id int NOT NULL AUTO_INCREMENT,
+    name varchar(255) NOT NULL,
+    url varchar(255) NOT NULL,
     PRIMARY KEY(id)
 ) 
 -- +goose StatementBegin
