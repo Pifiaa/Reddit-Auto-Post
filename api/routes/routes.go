@@ -19,9 +19,6 @@ func Routes(route *gin.Engine) {
 		// Definir la ruta para obtener un token de acceso.
 		redditGroup.POST("/access-token", handler.GetAccessToken)
 
-		// Actualiza el token de acceso
-		redditGroup.POST("/refresh-token", handler.RefreshAccessToken)
-
 		// Definir la ruta para crear un nuevo post.
 		redditGroup.POST("/post", handler.CreatePost)
 	}

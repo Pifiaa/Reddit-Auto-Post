@@ -13,9 +13,3 @@ func GetAccessToken(c *gin.Context) {
 
 	services.Auth(url, c)
 }
-
-func RefreshAccessToken(c *gin.Context) {
-	url := fmt.Sprintf("%s/access_token", config.GetEnv("reddit.url"))
-
-	services.RefreshToken(url, c)
-}
