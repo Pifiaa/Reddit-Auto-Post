@@ -1,13 +1,15 @@
 package handler
 
 import (
-	"net/http"
+	"RedditAutoPost/config"
+	"RedditAutoPost/internal/services"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
 
 func CreatePost(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"message": "Post creado exitosamente",
-	})
+	url := fmt.Sprintf("%s/api/submit", config.GetEnv("reddit.oauth"))
+
+	services.Auth(url, c)
 }

@@ -1,8 +1,6 @@
 package services
 
 import (
-	request "RedditAutoPost/internal/http"
-	"encoding/base64"
 	"fmt"
 	"net/http"
 
@@ -10,19 +8,22 @@ import (
 )
 
 func Auth(url string, c *gin.Context) {
-	var firstCredential, err = GetCredentials()
+	var redditCredential, err = GetCredentials()
 
 	if err != nil {
-		fmt.Println(err)
-		c.JSON(http.StatusNotFound, err)
-		return
+		c.JSON(http.StatusInternalServerError, gin.H{"Error: ": err})
 	}
 
-	username := firstCredential.Username
-	password := firstCredential.Password
-	client_secret := firstCredential.ClientSecret
-	client_id := firstCredential.ClientID
+	if len(redditCredential) == 0 {
+		err = fmt.Errorf("No hay credenciales de acceso disponibles")
+		c.JSON(http.StatusNotFound, gin.H{"Error: ": err})
+	}
+	c.JSON(http.StatusAccepted, redditCredential)
 
+	/*username := redditCredential[0].Username
+	password := redditCredential[0].Password
+	client_secret := redditCredential[0].ClientSecret
+	client_id := redditCredential[0].ClientID
 	authString := base64.StdEncoding.EncodeToString([]byte(client_id + ":" + client_secret))
 
 	data := fmt.Sprintf("grant_type=password&username=%s&password=%s", username, password)
@@ -32,5 +33,11 @@ func Auth(url string, c *gin.Context) {
 		"Authorization": "Basic " + authString,
 	}
 
-	request.Post(url, headers, data, c)
+	status, result := request.Post(url, headers, data, c)
+
+	if status == 200 {
+		c.JSON(status, result)
+	} /*else {
+		c.JSON(status, result)
+	}*/
 }

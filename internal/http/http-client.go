@@ -8,13 +8,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Post(url string, headers map[string]string, data string, c *gin.Context) {
+func Post(url string, headers map[string]string, data string, c *gin.Context) (int, map[string]interface{}) {
 
 	req, err := http.NewRequest("POST", url, bytes.NewBufferString(data))
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return http.StatusInternalServerError, gin.H{"error": err.Error()}
 	}
 
 	for key, value := range headers {
@@ -25,8 +24,7 @@ func Post(url string, headers map[string]string, data string, c *gin.Context) {
 	resp, err := client.Do(req)
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return http.StatusInternalServerError, gin.H{"error": err.Error()}
 	}
 
 	defer resp.Body.Close()
@@ -34,11 +32,10 @@ func Post(url string, headers map[string]string, data string, c *gin.Context) {
 	var result map[string]interface{}
 	err = json.NewDecoder(resp.Body).Decode(&result)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		return http.StatusInternalServerError, gin.H{"error": err.Error()}
 	}
 
-	c.JSON(http.StatusOK, result)
+	return http.StatusOK, result
 }
 
 func GET() {

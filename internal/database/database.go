@@ -18,24 +18,18 @@ func Connect() (*gorm.DB, error) {
 	addr := fmt.Sprintf("%s:%s", config.GetEnv("database.host"), config.GetEnv("database.port"))
 
 	var dsn string
-	if password != "" {
-		dsn = fmt.Sprintf(
-			"%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
-			user,
-			password,
-			addr,
-			database,
-		)
-	} else {
-		dsn = fmt.Sprintf(
-			"%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
-			user,
-			addr,
-			database,
-		)
-	}
+	dsn = fmt.Sprintf("%s%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
+		user,
+		func() string {
+			if password != "" {
+				return ":" + password
+			}
+			return ""
+		}(),
+		addr,
+		database,
+	)
 
-	fmt.Println(dsn)
 	connection, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return nil, fmt.Errorf("falló la conexión a la base de datos: %v", err)
