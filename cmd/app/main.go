@@ -5,6 +5,7 @@ import (
 	"RedditAutoPost/config"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,7 +15,8 @@ func main() {
 	// setupApp configura la aplicación y devuelve el router.
 	router, err := setupApp()
 	if err != nil {
-		log.Fatal("Error al configurar la aplicación: ", err)
+		log.Println("Error al configurar la aplicación: ", err)
+		os.Exit(1)
 	}
 
 	// Obtener el puerto del archivo de configuración.
@@ -29,7 +31,8 @@ func main() {
 	go func() {
 		err = router.Run(port)
 		if err != nil {
-			log.Fatal("Error al iniciar el servidor: ", err)
+			log.Println("Error al iniciar el servidor: ", err)
+			os.Exit(1)
 		}
 		close(serverStarted)
 	}()
@@ -53,7 +56,14 @@ func setupApp() (*gin.Engine, error) {
 	router := gin.Default()
 
 	// Configurar las rutas de la aplicación.
-	routes.Routes(router)
+	err = routes.Routes(router)
+	if err != nil {
+		if gin.IsDebugging() {
+			fmt.Println("Error al configurar rutas: ", err)
+		}
+
+		return nil, err
+	}
 
 	// Devolver el router configurado y sin errores.
 	return router, nil
