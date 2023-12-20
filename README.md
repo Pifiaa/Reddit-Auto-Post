@@ -101,9 +101,3 @@ REDDIT-AUTO-POST
 | Ver credenciales         | GET            | /api/v1/credentials         |
 | Actualizar credenciales  | PUT            | /api/v1/update-credentials  |
 | Eliminar credenciales    | DELETE         | /api/v1/delete-credentials  |
-
-<style>
-  tr:nth-child(even) {
-    background-color: #393d42;
-  }
-</style>
