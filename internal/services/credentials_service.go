@@ -5,7 +5,6 @@ import (
 	"RedditAutoPost/internal/models/credentials"
 	"RedditAutoPost/internal/models/token"
 	"fmt"
-	"time"
 )
 
 func GetCredentials() ([]credentials.Credentials, error) {
@@ -17,7 +16,7 @@ func GetCredentials() ([]credentials.Credentials, error) {
 	}
 
 	var redditCredential []credentials.Credentials
-	db.Unscoped().Find(&redditCredential)
+	db.Limit(1).Unscoped().Find(&redditCredential)
 
 	database.Close()
 
@@ -31,16 +30,20 @@ func CreateCredentials(fields credentials.Credentials) {
 		err = fmt.Errorf("Error al conectar la base de datos: %w", err)
 	}
 
-	// credential := credentials.Credentials{ClientID: fields.ClientID}
-
-	result := db.FirstOrCreate(&fields, fields)
+	// Utiliza FirstOrCreate con un puntero a la instancia de Credentials
+	result := db.Unscoped().FirstOrCreate(&fields, credentials.Credentials{ClientID: fields.ClientID})
 
 	if result.Error != nil {
-		panic("Failed to create or retrieve user")
+		// Manejar el error de alguna manera
+		fmt.Println("Error al crear o buscar credenciales:", result.Error)
+		return
 	}
+
+	// Imprime el resultado
+	fmt.Println("Credenciales agregadas")
 }
 
-func CreateAccessToken(accessToken string, expiration time.Time) {
+func CreateAccessToken(accessToken string, expiration string) {
 	db, err := database.Connect()
 
 	if err != nil {
