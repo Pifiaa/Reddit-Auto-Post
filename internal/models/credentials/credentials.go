@@ -1,9 +1,6 @@
 package credentials
 
-import "gorm.io/gorm"
-
 type Credentials struct {
-	gorm.Model
 	ID           uint   `json:"id" gorm:"AUTO_INCREMENT;"primaryKey"`
 	Username     string `json:"username" gorm:"not null"`
 	Password     string `json:"password" gorm:"not null"`
