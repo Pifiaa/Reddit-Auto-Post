@@ -1,5 +1,5 @@
 -- +goose Up
-CREATE TABLE Token (
+CREATE TABLE Tokens (
     Token Text NOT NULL,
     Expiration Datetime NOT NULL
 )

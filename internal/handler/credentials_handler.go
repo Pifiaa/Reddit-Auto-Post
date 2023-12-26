@@ -4,10 +4,20 @@ import (
 	"RedditAutoPost/internal/database/models/credentials"
 	"RedditAutoPost/internal/services"
 	"fmt"
+	"net/http"
 	"reflect"
 
 	"github.com/gin-gonic/gin"
 )
+
+func GetCredentials(c *gin.Context) {
+	redditCredential, err := services.GetCredentials()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"Error: ": err.Error()})
+	}
+
+	c.JSON(http.StatusOK, redditCredential)
+}
 
 func CreateCredentials(c *gin.Context) {
 	username := "Piifia"

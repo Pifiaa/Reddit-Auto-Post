@@ -7,7 +7,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
 type Server interface {
@@ -15,16 +14,14 @@ type Server interface {
 }
 
 type ginServer struct {
-	app *gin.Engine
-	db  *gorm.DB
-	cfg *config.Config
+	server *gin.Engine
+	cfg    *config.Config
 }
 
-func NewGinServer(cfg *config.Config, db *gorm.DB) Server {
+func NewGinServer(cfg *config.Config) Server {
 	return &ginServer{
-		app: gin.Default(),
-		db:  db,
-		cfg: cfg,
+		server: gin.Default(),
+		cfg:    cfg,
 	}
 }
 
@@ -34,7 +31,7 @@ func (s *ginServer) Start() error {
 	}
 
 	serverAddr := fmt.Sprintf(":%s", s.cfg.Server.Port)
-	if err := http.ListenAndServe(serverAddr, s.app); err != nil {
+	if err := http.ListenAndServe(serverAddr, s.server); err != nil {
 		return fmt.Errorf("error al iniciar el servidor: %w", err)
 	}
 

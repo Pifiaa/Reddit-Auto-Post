@@ -1,59 +1,54 @@
 package services
 
 import (
+	"RedditAutoPost/internal/database"
 	"RedditAutoPost/internal/database/models/credentials"
+	"errors"
+	"fmt"
+
+	"gorm.io/gorm"
 )
 
-func GetCredentials() ([]credentials.Credentials, error) {
-	//db, err := database.Connect()
+func GetCredentials() (credentials.Credentials, error) {
+	connection, err := database.DatabaseConnect()
+	if err != nil {
+		return credentials.Credentials{}, fmt.Errorf("Error al conectar la base de datos: %w", err)
+	}
+	defer connection.Close()
 
-	/*if err != nil {
-		err = fmt.Errorf("Error al conectar la base de datos: %w", err)
-		return []credentials.Credentials{}, err
-	}*/
+	db := connection.GetDb()
 
-	var redditCredential []credentials.Credentials
-	/*db.Limit(1).Unscoped().Find(&redditCredential)
+	var redditCredential credentials.Credentials
 
-	database.Close()*/
+	if err := db.Unscoped().First(&redditCredential).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return credentials.Credentials{}, fmt.Errorf("No se encontraron credenciales: %w", err)
+		}
+		return credentials.Credentials{}, fmt.Errorf("Error al obtener credenciales: %w", err)
+	}
 
 	return redditCredential, nil
 }
 
 func CreateCredentials(fields credentials.Credentials) {
-	/*db, err := database.Connect()
+	connection, err := database.DatabaseConnect()
 
 	if err != nil {
-		err = fmt.Errorf("Error al conectar la base de datos: %w", err)
-	}*/
+		fmt.Errorf("Error al conectar la base de datos: %w", err)
+	}
 
-	// Utiliza FirstOrCreate con un puntero a la instancia de Credentials
-	//result := db.Unscoped().FirstOrCreate(&fields, credentials.Credentials{ClientID: fields.ClientID})
+	defer connection.Close()
 
-	/*if result.Error != nil {
+	db := connection.GetDb()
+
+	result := db.Unscoped().FirstOrCreate(&fields, credentials.Credentials{ClientID: fields.ClientID})
+
+	if result.Error != nil {
 		// Manejar el error de alguna manera
 		fmt.Println("Error al crear o buscar credenciales:", result.Error)
 		return
 	}
 
 	// Imprime el resultado
-	fmt.Println("Credenciales agregadas")*/
-}
-
-func CreateAccessToken(accessToken string, expiration string) {
-	/*db, err := database.Connect()
-
-	if err != nil {
-		err = fmt.Errorf("Error al conectar la base de datos: %w", err)
-	}
-
-	newToken := token.AccessToken{Token: accessToken, Expiration: expiration}
-
-	result := db.Where(token.AccessToken{Token: accessToken}).Assign(&newToken).FirstOrCreate(&newToken)
-
-	if result.Error != nil {
-		panic("Failed to perform firstOrCreate: " + result.Error.Error())
-	}
-
-	fmt.Println("Resullt", result)*/
+	fmt.Println("Credenciales agregadas")
 }

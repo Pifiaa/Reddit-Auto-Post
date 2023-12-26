@@ -1,6 +1,14 @@
-package http
+package request
 
-/*func Post(url string, headers map[string]string, data string, c *gin.Context) (int, map[string]interface{}) {
+import (
+	"bytes"
+	"encoding/json"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
+
+func Post(url string, headers map[string]string, data string, c *gin.Context) (int, map[string]interface{}) {
 
 	req, err := http.NewRequest("POST", url, bytes.NewBufferString(data))
 
@@ -28,4 +36,4 @@ package http
 	}
 
 	return http.StatusOK, result
-}*/
+}

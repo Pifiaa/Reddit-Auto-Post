@@ -88,16 +88,15 @@ REDDIT-AUTO-POST
 ---
 
 ## Endpoints
-| Nombre                   | Metodo HTTP    | Rutas                       |
-|--------------------------|----------------|-----------------------------|
-| Obtener token            | POST           | /api/v1/access-token        |
-| Nuevo post               | POST           | /api/v1/create-post         |
-| Ver post                 | GET            | /api/v1/posts               |
-| Nuevo subreddit          | POST           | /api/v1/create-subreddit    |
-| Ver subreddit            | GET            | /api/v1/subreddits          |
-| Eliminar subreddit       | DELETE         | /api/v1/delete-subreddit    |
-| Subir archivo            | POST           | /api/v1/upload-file         |
-| Agregar credenciales     | POST           | /api/v1/create-credentials  |
-| Ver credenciales         | GET            | /api/v1/credentials         |
-| Actualizar credenciales  | PUT            | /api/v1/update-credentials  |
-| Eliminar credenciales    | DELETE         | /api/v1/delete-credentials  |
+| Nombre                   | Metodo HTTP    | Rutas                       | Estatus  |
+|--------------------------|----------------|-----------------------------|----------|
+| Obtener token            | POST           | /api/v1/access-token        | &#x2705; | 
+| Nuevo post               | POST           | /api/v1/create-post         | &#x2705; |
+| Ver post                 | GET            | /api/v1/posts               | &#x274C; |
+| Nuevo subreddit          | POST           | /api/v1/create-subreddit    | &#x274C; |
+| Ver subreddit            | GET            | /api/v1/subreddits          | &#x274C; |
+| Eliminar subreddit       | DELETE         | /api/v1/delete-subreddit    | &#x274C; |
+| Subir archivo            | POST           | /api/v1/upload-file         | &#x274C; |
+| Agregar credenciales     | POST           | /api/v1/create-credentials  | &#x2705; |
+| Ver credenciales         | GET            | /api/v1/credentials         | &#x2705; |
+| Eliminar credenciales    | DELETE         | /api/v1/delete-credentials  | &#x274C; |

@@ -8,33 +8,33 @@ import (
 )
 
 func SetupRoutes(app *ginServer) error {
-	router := app.app
-
-	// Pasa la instancia de ginServer como valor al contexto de Gin
-	router.Use(func(c *gin.Context) {
-		c.Set("server", app)
-		c.Next()
-	})
+	router := app.server
+	config := app.cfg
 
 	apiGroup := router.Group("/api")
 	{
 		auth := apiGroup.Group("/auth")
 		{
-			auth.POST("/token", handler.GetAccessToken)
+			auth.POST("/token", func(c *gin.Context) {
+				handler.GetAccessToken(c, config)
+			})
 		}
 
 		posts := apiGroup.Group("/posts")
 		{
-			posts.POST("/", handler.CreatePost)
+			posts.POST("/create", func(c *gin.Context) {
+				handler.CreatePost(c, config)
+			})
 		}
 
 		credentials := apiGroup.Group("/credentials")
 		{
+			credentials.GET("/", handler.GetCredentials)
 			credentials.POST("/create", handler.CreateCredentials)
 		}
 	}
 
-	app.app.NoRoute(func(c *gin.Context) {
+	router.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Ruta no encontrada"})
 	})
 

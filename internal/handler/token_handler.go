@@ -1,52 +1,95 @@
 package handler
 
 import (
+	"RedditAutoPost/config"
+	"RedditAutoPost/internal/database/models/token"
+	"RedditAutoPost/internal/request"
+	"RedditAutoPost/internal/services"
+	"encoding/base64"
+	"fmt"
+	"net/http"
+	"time"
+
 	"github.com/gin-gonic/gin"
 )
 
-func GetAccessToken(c *gin.Context) {
-	/*// Accede a la variable del servidor (ginServer) desde el contexto
-	server := c.MustGet("server").(*ginServer)
+func GetAccessToken(c *gin.Context, cfg *config.Config) (string, error) {
 
-	// Accede a la base de datos desde la instancia de ginServer
-	db := server.db
+	token, existToken := services.GetToken()
 
-	// Resto del código..*/
+	if !existToken {
+		return requestByToken(c, cfg)
+	}
 
-	/*redditCredential, err := services.GetCredentials()
+	isValid := tokenExpiration(token)
 
+	if !isValid {
+		return requestByToken(c, cfg)
+	}
+
+	c.JSON(200, token.Token)
+
+	return token.Token, nil
+}
+
+func secondsToDate(seconds float64) time.Time {
+	currentTime := time.Now()
+	newTime := currentTime.Add(time.Duration(int64(seconds)) * time.Second)
+
+	return newTime
+}
+
+func tokenExpiration(token token.Tokens) bool {
+	currentTime := time.Now()
+	expiration := token.Expiration
+
+	if currentTime.Unix() < expiration.Unix() {
+		return true
+	}
+
+	return false
+}
+
+func requestByToken(c *gin.Context, cfg *config.Config) (string, error) {
+	redditCredential, err := services.GetCredentials()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"Error: ": err.Error()})
-		return
+		return "", nil
 	}
 
-	if len(redditCredential) == 0 {
-		err = fmt.Errorf("No hay credenciales de acceso disponibles")
-		c.JSON(http.StatusNotFound, gin.H{"Error: ": err.Error()})
-		return
-	}
+	url := fmt.Sprintf("%s/access_token", cfg.Reddit.Url)
+	authString := base64.StdEncoding.EncodeToString([]byte(redditCredential.ClientID + ":" + redditCredential.ClientSecret))
 
-	username := redditCredential[0].Username
-	password := redditCredential[0].Password
-	client_secret := redditCredential[0].ClientSecret
-	client_id := redditCredential[0].ClientID
-	authString := base64.StdEncoding.EncodeToString([]byte(client_id + ":" + client_secret))
-
-	data := fmt.Sprintf("grant_type=password&username=%s&password=%s", username, password)
+	data := fmt.Sprintf("grant_type=password&username=%s&password=%s",
+		redditCredential.Username,
+		redditCredential.Password,
+	)
 
 	headers := map[string]string{
 		"Content-Type":  "application/x-www-form-urlencoded",
 		"Authorization": "Basic " + authString,
 	}
 
-	url := fmt.Sprintf("%s/access_token", config.GetEnv("reddit.url"))
-
 	status, result := request.Post(url, headers, data, c)
+
+	c.JSON(status, result)
 
 	if status == 200 {
 
-		timestamp := result["expires_in"].(float64)
-		myDate := time.Unix(timestamp, 0)
-		services.CreateAccessToken(result["access_token"].(string), myDate)
-	}*/
+		accessToken, accessTokenExists := result["access_token"].(string)
+
+		if accessTokenExists {
+			date := secondsToDate(result["expires_in"].(float64))
+			services.CreateAccessToken(accessToken, date)
+
+			return accessToken, nil
+		} else {
+			fmt.Println("No se encontró el token de acceso en la respuesta.")
+			return "", nil
+		}
+
+	} else {
+		fmt.Println("La solicitud no fue exitosa. Estado:", status)
+		return "", nil
+	}
 }

@@ -38,8 +38,8 @@ type (
 	}
 
 	Reddit struct {
-		url   string
-		oauth string
+		Url   string
+		Oauth string
 	}
 )
 
@@ -86,8 +86,8 @@ func LoadConfig() (AppConfig *Config, err error) {
 		},
 
 		Reddit: Reddit{
-			url:   viper.GetString("reddit.url"),
-			oauth: viper.GetString("reddit.oauth"),
+			Url:   viper.GetString("reddit.url"),
+			Oauth: viper.GetString("reddit.oauth"),
 		},
 	}
 

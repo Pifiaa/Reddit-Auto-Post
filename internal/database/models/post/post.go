@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-type Post struct {
+type Posts struct {
 	ID        int       `json:"id" gorm:"AUTO_INCREMENT;primaryKey"`
 	Message   string    `json:"message" gorm:"not null"`
 	Image     string    `json:"image" gorm:"not null"`
