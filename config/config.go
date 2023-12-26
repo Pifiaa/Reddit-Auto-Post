@@ -1,20 +1,56 @@
 package config
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
+	"sync"
 
 	"github.com/spf13/viper"
 )
 
-// InitializeConfig inicializa la configuración desde el archivo "config.yml".
-//
-// La función busca el archivo de configuración "config.yml" en el directorio
-// raíz del proyecto. Si no se encuentra, devuelve un error indicando la ausencia
-// del archivo. Si hay un error al leer el archivo de configuración, también
-// devuelve un error.
-func InitializeConfig() error {
+type (
+	Config struct {
+		App    App
+		Server Server
+		Db     Db
+		Reddit Reddit
+	}
+
+	App struct {
+		Name string
+	}
+
+	Server struct {
+		Host string
+		Port string
+	}
+
+	Db struct {
+		Host     string
+		Port     string
+		User     string
+		Password string
+		DBName   string
+		SSLMode  string
+		TimeZone string
+	}
+
+	Reddit struct {
+		url   string
+		oauth string
+	}
+)
+
+var (
+	initialized bool
+	AppConfig   *Config
+	once        sync.Once
+	mu          sync.Mutex
+)
+
+func LoadConfig() (AppConfig *Config, err error) {
 	dir, _ := os.Getwd()
 	rootDir := filepath.Join(dir, "..", "..")
 
@@ -23,20 +59,55 @@ func InitializeConfig() error {
 	viper.AutomaticEnv()
 	viper.SetConfigType("yml")
 
-	err := viper.ReadInConfig()
+	err = viper.ReadInConfig()
 
-	if err != nil {
-		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			return fmt.Errorf("No se encontró el archivo de configuración 'config.yml': %s", err)
-		} else {
-			return fmt.Errorf("Error al leer el archivo de configuración: %s", err)
-		}
+	if err != nil && !errors.As(err, &viper.ConfigFileNotFoundError{}) {
+		return nil, fmt.Errorf("Error al leer el archivo de configuración: %w", err)
 	}
 
-	return nil
+	AppConfig = &Config{
+		App: App{
+			Name: viper.GetString("project.name"),
+		},
+
+		Server: Server{
+			Host: viper.GetString("server.host"),
+			Port: viper.GetString("server.port"),
+		},
+
+		Db: Db{
+			Host:     viper.GetString("database.host"),
+			Port:     viper.GetString("database.port"),
+			User:     viper.GetString("database.username"),
+			Password: viper.GetString("database.password"),
+			DBName:   viper.GetString("database.name"),
+			SSLMode:  viper.GetString("database.sslmode"),
+			TimeZone: viper.GetString("database.timezone"),
+		},
+
+		Reddit: Reddit{
+			url:   viper.GetString("reddit.url"),
+			oauth: viper.GetString("reddit.oauth"),
+		},
+	}
+
+	return AppConfig, nil
 }
 
-// GetEnv devuelve el valor de una variable de entorno configurada
-func GetEnv(key string) string {
-	return viper.GetString(key)
+func GetConfig() (*Config, error) {
+	mu.Lock()
+	defer mu.Unlock()
+
+	if !initialized {
+		once.Do(func() {
+			config, err := LoadConfig()
+			if err != nil {
+				fmt.Println("Error loading config:", err)
+			}
+			AppConfig = config
+			initialized = true
+		})
+	}
+
+	return AppConfig, nil
 }

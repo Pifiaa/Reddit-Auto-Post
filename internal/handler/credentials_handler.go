@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"RedditAutoPost/internal/models/credentials"
+	"RedditAutoPost/internal/database/models/credentials"
 	"RedditAutoPost/internal/services"
 	"fmt"
 	"reflect"

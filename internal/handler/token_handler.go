@@ -1,20 +1,19 @@
 package handler
 
 import (
-	"RedditAutoPost/config"
-	request "RedditAutoPost/internal/http"
-	"RedditAutoPost/internal/services"
-	"encoding/base64"
-	"fmt"
-	"net/http"
-	"strconv"
-	"time"
-
 	"github.com/gin-gonic/gin"
 )
 
 func GetAccessToken(c *gin.Context) {
-	redditCredential, err := services.GetCredentials()
+	/*// Accede a la variable del servidor (ginServer) desde el contexto
+	server := c.MustGet("server").(*ginServer)
+
+	// Accede a la base de datos desde la instancia de ginServer
+	db := server.db
+
+	// Resto del código..*/
+
+	/*redditCredential, err := services.GetCredentials()
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"Error: ": err.Error()})
@@ -45,9 +44,9 @@ func GetAccessToken(c *gin.Context) {
 	status, result := request.Post(url, headers, data, c)
 
 	if status == 200 {
-		expirationSeconds, _ := strconv.Atoi(result["expires_in"].(string))
-		expiration := time.Now().Add(time.Second * time.Duration(expirationSeconds))
 
-		services.CreateAccessToken(result["access_token"].(string), expiration)
-	}
+		timestamp := result["expires_in"].(float64)
+		myDate := time.Unix(timestamp, 0)
+		services.CreateAccessToken(result["access_token"].(string), myDate)
+	}*/
 }
