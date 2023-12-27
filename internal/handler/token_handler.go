@@ -28,7 +28,7 @@ func GetAccessToken(c *gin.Context, cfg *config.Config) (string, error) {
 		return requestByToken(c, cfg)
 	}
 
-	c.JSON(200, token.Token)
+	// c.JSON(200, token.Token)
 
 	return token.Token, nil
 }

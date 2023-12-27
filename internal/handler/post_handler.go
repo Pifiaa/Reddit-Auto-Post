@@ -11,9 +11,9 @@ import (
 func CreatePost(c *gin.Context, cfg *config.Config) {
 	token, _ := GetAccessToken(c, cfg)
 
-	title := "Titulo de prueba"
-	text := "Mensaje de prueba"
-	sr := "pifiar4"
+	title := "test"
+	text := "test"
+	sr := "Pifiar2"
 	kind := "self"
 
 	url := fmt.Sprintf("%s/submit", cfg.Reddit.Oauth)
@@ -29,6 +29,8 @@ func CreatePost(c *gin.Context, cfg *config.Config) {
 		"Content-Type":  "application/x-www-form-urlencoded",
 		"Authorization": "Bearer " + token,
 	}
+
+	c.JSON(200, url)
 
 	status, result := request.Post(url, headers, data, c)
 

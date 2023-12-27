@@ -93,9 +93,9 @@ REDDIT-AUTO-POST
 | Obtener token           | POST          | /api/auth                   | &#x2705; | 
 | Ver post                | GET           | /api/posts/                 | &#x274C; |
 | Nuevo post              | POST          | /api/posts/create/          | &#x2705; |
-| Ver subreddit           | GET           | /api/v1/subreddits          | &#x274C; |
-| Nuevo subreddit         | POST          | /api/v1/create-subreddit    | &#x274C; |
-| Eliminar subreddit      | DELETE        | /api/v1/delete-subreddit    | &#x274C; |
+| Ver subreddit           | GET           | /api/subreddits/            | &#x274C; |
+| Nuevo subreddit         | POST          | /api/subreddits/create/     | &#x274C; |
+| Eliminar subreddit      | DELETE        | /api/subreddits/delete/     | &#x274C; |
 | Subir archivo           | POST          | /api/v1/upload-file         | &#x274C; |
 | Ver credenciales        | GET           | /api/credentials/           | &#x2705; |
 | Agregar credenciales    | POST          | /api/credentials/create/    | &#x2705; |

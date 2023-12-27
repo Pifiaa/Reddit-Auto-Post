@@ -13,5 +13,5 @@ database:
   name: test
 
 reddit:
-  url: https://www.reddit.com/api/v1
+  url: https://www.reddit.com/api
   oauth: https://oauth.reddit.com/api
