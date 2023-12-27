@@ -3,51 +3,45 @@ package services
 import (
 	"RedditAutoPost/internal/database"
 	"RedditAutoPost/internal/database/models/token"
-	"errors"
 	"fmt"
+	"log"
 	"time"
-
-	"gorm.io/gorm"
 )
 
-func CreateAccessToken(accessToken string, expiration time.Time) {
-	connection, err := database.DatabaseConnect()
-	if err != nil {
-		fmt.Errorf("Error al conectar la base de datos: %w", err)
-	}
-
-	defer connection.Close()
-
-	db := connection.GetDb()
-
-	newToken := token.Tokens{Token: accessToken, Expiration: expiration}
-
-	result := db.Where(token.Tokens{Token: accessToken}).Assign(&newToken).FirstOrCreate(&newToken)
-
-	if result.Error != nil {
-		panic("Failed to perform firstOrCreate: " + result.Error.Error())
-	}
-
-	fmt.Println("Resullt", result)
+// TokenService maneja las operaciones relacionadas con tokens.
+type TokenService struct {
+	db database.Database
 }
 
-func GetToken() (token.Tokens, bool) {
-	connection, err := database.DatabaseConnect()
+// NewTokenService crea una nueva instancia de TokenService.
+func NewTokenService() (*TokenService, error) {
+	db, err := database.DatabaseConnect()
 	if err != nil {
-		return token.Tokens{}, false
+		return nil, fmt.Errorf("Error al conectar la base de datos: %w", err)
 	}
-	defer connection.Close()
+	return &TokenService{db: db}, nil
+}
 
-	db := connection.GetDb()
+// CreateAccessToken crea un nuevo token de acceso.
+func (ts *TokenService) CreateAccessToken(accessToken string, expiration time.Time) error {
+	newToken := token.Tokens{Token: accessToken, Expiration: expiration}
 
-	var token token.Tokens
-
-	if err := db.Unscoped().First(&token).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return token, false
-		}
-		return token, false
+	result := ts.db.GetDb().Where(token.Tokens{Token: accessToken}).Assign(&newToken).FirstOrCreate(&newToken)
+	if result.Error != nil {
+		return fmt.Errorf("Error al crear el token de acceso: %w", result.Error)
 	}
 
-	return token, true
+	log.Println("Token creado exitosamente")
+	return nil
+}
+
+// GetToken obtiene el token almacenado en la base de datos.
+func (ts *TokenService) GetToken() (token.Tokens, error) {
+	var t token.Tokens
+
+	if err := ts.db.GetDb().Unscoped().First(&t).Error; err != nil {
+		return t, fmt.Errorf("Error al obtener el token: %w", err)
+	}
+
+	return t, nil
 }

@@ -7,23 +7,24 @@ import (
 	"RedditAutoPost/internal/services"
 	"encoding/base64"
 	"fmt"
-	"net/http"
+	"log"
 	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
 func GetAccessToken(c *gin.Context, cfg *config.Config) (string, error) {
-
-	token, existToken := services.GetToken()
-
-	if !existToken {
-		return requestByToken(c, cfg)
+	tokenService, err := services.NewTokenService()
+	if err != nil {
+		return "", fmt.Errorf("error al crear el servicio de tokens: %v", err)
 	}
 
-	isValid := tokenExpiration(token)
+	token, err := tokenService.GetToken()
+	if err != nil {
+		return "", fmt.Errorf("error al obtener el token: %v", err)
+	}
 
-	if !isValid {
+	if !tokenIsValid(token) {
 		return requestByToken(c, cfg)
 	}
 
@@ -33,28 +34,22 @@ func GetAccessToken(c *gin.Context, cfg *config.Config) (string, error) {
 }
 
 func secondsToDate(seconds float64) time.Time {
-	currentTime := time.Now()
-	newTime := currentTime.Add(time.Duration(int64(seconds)) * time.Second)
-
-	return newTime
+	return time.Now().Add(time.Duration(int64(seconds)) * time.Second)
 }
 
-func tokenExpiration(token token.Tokens) bool {
-	currentTime := time.Now()
-	expiration := token.Expiration
-
-	if currentTime.Unix() < expiration.Unix() {
-		return true
-	}
-
-	return false
+func tokenIsValid(tok token.Tokens) bool {
+	return time.Now().Unix() < tok.Expiration.Unix()
 }
 
 func requestByToken(c *gin.Context, cfg *config.Config) (string, error) {
+	tokenService, err := services.NewTokenService()
+	if err != nil {
+		return "", fmt.Errorf("error al crear el servicio de tokens: %v", err)
+	}
+
 	redditCredential, err := services.GetCredentials()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"Error: ": err.Error()})
-		return "", nil
+		return "", err
 	}
 
 	url := fmt.Sprintf("%s/access_token", cfg.Reddit.Url)
@@ -75,21 +70,18 @@ func requestByToken(c *gin.Context, cfg *config.Config) (string, error) {
 	c.JSON(status, result)
 
 	if status == 200 {
-
-		accessToken, accessTokenExists := result["access_token"].(string)
-
-		if accessTokenExists {
-			date := secondsToDate(result["expires_in"].(float64))
-			services.CreateAccessToken(accessToken, date)
-
-			return accessToken, nil
-		} else {
-			fmt.Println("No se encontró el token de acceso en la respuesta.")
+		accessToken, ok := result["access_token"].(string)
+		if !ok {
+			log.Println("No se encontró el token de acceso")
 			return "", nil
 		}
 
-	} else {
-		fmt.Println("La solicitud no fue exitosa. Estado:", status)
-		return "", nil
+		date := secondsToDate(result["expires_in"].(float64))
+		tokenService.CreateAccessToken(accessToken, date)
+
+		return accessToken, nil
 	}
+
+	log.Printf("La solicitud no fue exitosa. Estado: %d\n", status)
+	return "", nil
 }

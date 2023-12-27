@@ -88,15 +88,15 @@ REDDIT-AUTO-POST
 ---
 
 ## Endpoints
-| Nombre                   | Metodo HTTP    | Rutas                       | Estatus  |
-|--------------------------|----------------|-----------------------------|----------|
-| Obtener token            | POST           | /api/v1/access-token        | &#x2705; | 
-| Nuevo post               | POST           | /api/v1/create-post         | &#x2705; |
-| Ver post                 | GET            | /api/v1/posts               | &#x274C; |
-| Nuevo subreddit          | POST           | /api/v1/create-subreddit    | &#x274C; |
-| Ver subreddit            | GET            | /api/v1/subreddits          | &#x274C; |
-| Eliminar subreddit       | DELETE         | /api/v1/delete-subreddit    | &#x274C; |
-| Subir archivo            | POST           | /api/v1/upload-file         | &#x274C; |
-| Agregar credenciales     | POST           | /api/v1/create-credentials  | &#x2705; |
-| Ver credenciales         | GET            | /api/v1/credentials         | &#x2705; |
-| Eliminar credenciales    | DELETE         | /api/v1/delete-credentials  | &#x274C; |
+| Nombre                  | Metodo HTTP   | Rutas                       | Estatus  |
+|-------------------------|---------------|-----------------------------|----------|
+| Obtener token           | POST          | /api/auth                   | &#x2705; | 
+| Ver post                | GET           | /api/posts/                 | &#x274C; |
+| Nuevo post              | POST          | /api/posts/create/          | &#x2705; |
+| Ver subreddit           | GET           | /api/v1/subreddits          | &#x274C; |
+| Nuevo subreddit         | POST          | /api/v1/create-subreddit    | &#x274C; |
+| Eliminar subreddit      | DELETE        | /api/v1/delete-subreddit    | &#x274C; |
+| Subir archivo           | POST          | /api/v1/upload-file         | &#x274C; |
+| Ver credenciales        | GET           | /api/credentials/           | &#x2705; |
+| Agregar credenciales    | POST          | /api/credentials/create/    | &#x2705; |
+| Eliminar credenciales   | DELETE        | /api/credentials/delete/    | &#x274C; |
