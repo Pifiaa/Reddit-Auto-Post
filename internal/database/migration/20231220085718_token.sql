@@ -7,6 +7,6 @@ CREATE TABLE Tokens (
 -- +goose StatementEnd
 
 -- +goose Down
-DROP TABLE IF EXISTS Token
+DROP TABLE IF EXISTS Tokens
 -- +goose StatementBegin
 -- +goose StatementEnd

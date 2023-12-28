@@ -28,8 +28,6 @@ func GetAccessToken(c *gin.Context, cfg *config.Config) (string, error) {
 		return requestByToken(c, cfg)
 	}
 
-	// c.JSON(200, token.Token)
-
 	return token.Token, nil
 }
 
@@ -42,17 +40,12 @@ func tokenIsValid(tok token.Tokens) bool {
 }
 
 func requestByToken(c *gin.Context, cfg *config.Config) (string, error) {
-	tokenService, err := services.NewTokenService()
-	if err != nil {
-		return "", fmt.Errorf("error al crear el servicio de tokens: %v", err)
-	}
-
 	redditCredential, err := services.GetCredentials()
 	if err != nil {
 		return "", err
 	}
 
-	url := fmt.Sprintf("%s/access_token", cfg.Reddit.Url)
+	url := fmt.Sprintf("%s/v1/access_token", cfg.Reddit.Url)
 	authString := base64.StdEncoding.EncodeToString([]byte(redditCredential.ClientID + ":" + redditCredential.ClientSecret))
 
 	data := fmt.Sprintf("grant_type=password&username=%s&password=%s",
@@ -67,8 +60,6 @@ func requestByToken(c *gin.Context, cfg *config.Config) (string, error) {
 
 	status, result := request.Post(url, headers, data, c)
 
-	c.JSON(status, result)
-
 	if status == 200 {
 		accessToken, ok := result["access_token"].(string)
 		if !ok {
@@ -77,6 +68,12 @@ func requestByToken(c *gin.Context, cfg *config.Config) (string, error) {
 		}
 
 		date := secondsToDate(result["expires_in"].(float64))
+
+		tokenService, err := services.NewTokenService()
+		if err != nil {
+			return "", fmt.Errorf("error al crear el servicio de tokens: %v", err)
+		}
+
 		tokenService.CreateAccessToken(accessToken, date)
 
 		return accessToken, nil

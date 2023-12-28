@@ -11,9 +11,9 @@ import (
 func CreatePost(c *gin.Context, cfg *config.Config) {
 	token, _ := GetAccessToken(c, cfg)
 
-	title := "test"
-	text := "test"
-	sr := "Pifiar2"
+	title := "Pinche reddit no tiene un sandbox para hacer pruebas"
+	text := "La api de prueba de reddit no tiene un ambiente de pruebas"
+	sr := "testeandoconpifia"
 	kind := "self"
 
 	url := fmt.Sprintf("%s/submit", cfg.Reddit.Oauth)

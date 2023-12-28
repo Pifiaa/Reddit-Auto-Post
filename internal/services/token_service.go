@@ -3,9 +3,12 @@ package services
 import (
 	"RedditAutoPost/internal/database"
 	"RedditAutoPost/internal/database/models/token"
+	"errors"
 	"fmt"
 	"log"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 // TokenService maneja las operaciones relacionadas con tokens.
@@ -37,10 +40,15 @@ func (ts *TokenService) CreateAccessToken(accessToken string, expiration time.Ti
 
 // GetToken obtiene el token almacenado en la base de datos.
 func (ts *TokenService) GetToken() (token.Tokens, error) {
+
 	var t token.Tokens
 
-	if err := ts.db.GetDb().Unscoped().First(&t).Error; err != nil {
-		return t, fmt.Errorf("Error al obtener el token: %w", err)
+	if err := ts.db.GetDb().First(&t).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return t, nil
+		} else {
+			return t, fmt.Errorf("Error al obtener token: %w", err)
+		}
 	}
 
 	return t, nil
