@@ -90,7 +90,9 @@ REDDIT-AUTO-POST
 ## Endpoints
 | Nombre                  | Metodo HTTP   | Rutas                       | Estatus  |
 |-------------------------|---------------|-----------------------------|----------|
-| Obtener token           | POST          | /api/auth                   | &#x2705; | 
+| Ver token               | GET           | /api/auth/token             | &#x2705; | 
+| Obtener token           | POST          | /api/auth/token             | &#x2705; | 
+| Eliminar token          | DELETE        | /api/auth/token             | &#x2705; | 
 | Ver post                | GET           | /api/posts/                 | &#x274C; |
 | Nuevo post              | POST          | /api/posts/create/          | &#x2705; |
 | Ver subreddit           | GET           | /api/subreddits/            | &#x274C; |

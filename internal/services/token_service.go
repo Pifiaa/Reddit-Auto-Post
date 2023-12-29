@@ -27,6 +27,8 @@ func NewTokenService() (*TokenService, error) {
 
 // CreateAccessToken crea un nuevo token de acceso.
 func (ts *TokenService) CreateAccessToken(accessToken string, expiration time.Time) error {
+	ts.DeleteToken()
+
 	newToken := token.Tokens{Token: accessToken, Expiration: expiration}
 
 	result := ts.db.GetDb().Where(token.Tokens{Token: accessToken}).Assign(&newToken).FirstOrCreate(&newToken)
@@ -52,4 +54,14 @@ func (ts *TokenService) GetToken() (token.Tokens, error) {
 	}
 
 	return t, nil
+}
+
+func (ts *TokenService) DeleteToken() {
+	result := ts.db.GetDb().Exec("DELETE FROM tokens")
+
+	if result.Error != nil {
+		fmt.Println("Error eliminando el token:", result.Error)
+	} else {
+		fmt.Println("Token eliminado exitosamente")
+	}
 }

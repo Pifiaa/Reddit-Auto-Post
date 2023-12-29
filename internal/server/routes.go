@@ -15,8 +15,16 @@ func SetupRoutes(app *ginServer) error {
 	{
 		auth := apiGroup.Group("/auth")
 		{
-			auth.POST("/token", func(c *gin.Context) {
+			auth.GET("/token", func(c *gin.Context) {
 				handler.GetAccessToken(c, config)
+			})
+
+			auth.POST("/token", func(c *gin.Context) {
+				handler.ObtainAccessToken(c, config)
+			})
+
+			auth.DELETE("/token", func(c *gin.Context) {
+				handler.DeleteToken(c, config)
 			})
 		}
 

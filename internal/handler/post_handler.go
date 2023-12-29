@@ -3,6 +3,8 @@ package handler
 import (
 	"RedditAutoPost/config"
 	"RedditAutoPost/internal/request"
+	"bytes"
+	"encoding/json"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
@@ -18,21 +20,28 @@ func CreatePost(c *gin.Context, cfg *config.Config) {
 
 	url := fmt.Sprintf("%s/submit", cfg.Reddit.Oauth)
 
-	data := fmt.Sprintf("title=%s&text=%s&sr=%s&kind=%s",
+	/*data := fmt.Sprintf("title=%s&text=%s&sr=%s&kind=%s",
 		title,
 		text,
 		sr,
 		kind,
-	)
+	)*/
+
+	data, _ := json.Marshal(map[string]string{
+		"title": title,
+		"text":  text,
+		"sr":    sr,
+		"kind":  kind,
+	})
+	responseBody := bytes.NewBuffer(data)
 
 	headers := map[string]string{
 		"Content-Type":  "application/x-www-form-urlencoded",
-		"Authorization": "Bearer " + token,
+		"Authorization": "Bearer " + token.Token,
 	}
 
-	c.JSON(200, url)
-
-	status, result := request.Post(url, headers, data, c)
+	status, result := request.Post(url, headers, responseBody, c)
 
 	c.JSON(status, result)
+
 }

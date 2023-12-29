@@ -8,9 +8,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Post(url string, headers map[string]string, data string, c *gin.Context) (int, map[string]interface{}) {
+func Post(url string, headers map[string]string, data *bytes.Buffer, c *gin.Context) (int, map[string]interface{}) {
 
-	req, err := http.NewRequest("POST", url, bytes.NewBufferString(data))
+	req, err := http.NewRequest("POST", url, data)
 	if err != nil {
 		return http.StatusInternalServerError, gin.H{"error": err.Error()}
 	}
