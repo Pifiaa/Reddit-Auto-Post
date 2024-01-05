@@ -1,24 +1,12 @@
 package handler
 
-import (
-	"RedditAutoPost/config"
-	"RedditAutoPost/internal/database/models/token"
-	"RedditAutoPost/internal/request"
-	"RedditAutoPost/internal/services"
-	"bytes"
-	"encoding/base64"
-	"fmt"
-	"log"
-	"time"
+/*
+func ObtainAccessToken(C *fiber.Ctx) error {
 
-	"github.com/gin-gonic/gin"
-)
-
-func ObtainAccessToken(c *gin.Context, cfg *config.Config) (string, error) {
 	token, _ := GetAccessToken(c, cfg)
-	/*if err != nil {
+	if err != nil {
 		return "", fmt.Errorf("Error: %v", err)
-	}*/
+	}
 	fmt.Print(token)
 
 	if !tokenIsValid(token) {
@@ -28,6 +16,7 @@ func ObtainAccessToken(c *gin.Context, cfg *config.Config) (string, error) {
 	return token.Token, nil
 }
 
+/*
 func secondsToDate(seconds float64) time.Time {
 	return time.Now().Add(time.Duration(int64(seconds)) * time.Second)
 }
@@ -54,16 +43,16 @@ func requestByToken(c *gin.Context, cfg *config.Config) (string, error) {
 	// data := []byte(`{"grant_type":"password","password":"` + redditCredential.Password + `","username":"` + redditCredential.Username + `"}`)
 	// data := string([]byte(`{"grant_type":"password","password":"` + redditCredential.Password + `","username":"` + redditCredential.Username + `"}`))*/
 
-	/*data := []byte(`{"grant_type:password, username":"` + redditCredential.Username + `","password":"` + redditCredential.Password + `"}`)
-	bodyReader := bytes.NewReader(data)*/
+/*data := []byte(`{"grant_type:password, username":"` + redditCredential.Username + `","password":"` + redditCredential.Password + `"}`)
+bodyReader := bytes.NewReader(data)*/
 
-	/*data, _ := json.Marshal(map[string]string{
-		"grant_type": "password",
-		"username":   redditCredential.Username,
-		"password":   redditCredential.Password,
-	})*/
+/*data, _ := json.Marshal(map[string]string{
+	"grant_type": "password",
+	"username":   redditCredential.Username,
+	"password":   redditCredential.Password,
+})*/
 
-	jsonData := []byte(`{"grant_type":"password", "username":"` + redditCredential.Username + `", "password":"` + redditCredential.Password + `"}`)
+/*jsonData := []byte(`{"grant_type":"password", "username":"` + redditCredential.Username + `", "password":"` + redditCredential.Password + `"}`)
 
 	responseBody := bytes.NewBuffer(jsonData)
 
@@ -125,4 +114,8 @@ func DeleteToken(c *gin.Context, cfg *config.Config) error {
 	tokenService.DeleteToken()
 
 	return nil
-}
+}*/
+
+/*func CreateToken(C *fiber.Ctx) error {
+
+}*/

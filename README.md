@@ -39,7 +39,7 @@ Este es un comando utilizado para descargar los módulos necesarios para constru
 ---
 
 ### Paquetes y Herramientas Instalados
-1. [gin-gonic](https://gin-gonic.com/es/): Framework web para Go que facilita la construcción de aplicaciones web y APIs de manera eficiente.
+1. [Fiber](https://docs.gofiber.io): Framework web para Go que facilita la construcción de aplicaciones web y APIs de manera eficiente.
 
 2. [viper](https://github.com/spf13/viper): Librería de configuración flexible que simplifica el manejo de la configuración de la aplicación con soporte para diversos formatos y fuentes.
 

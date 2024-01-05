@@ -1,10 +1,6 @@
 package database
 
 import (
-	"RedditAutoPost/config"
-	"fmt"
-
-	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
@@ -17,13 +13,17 @@ type connectionDatabase struct {
 	Db *gorm.DB
 }
 
-func DatabaseConnect() (Database, error) {
+func ConnectDB() {
+	dsn := 
+}
+
+/*func DatabaseConnect() (Database, error) {
 	// config, err := config.GetConfig()
 	config := config.GetConfig()
 
-	/*if err != nil {
+	if err != nil {
 		log.Fatal("No se ha cargado la configuración de la aplicación")
-	}*/
+	}
 
 	password := getPassword(config.Db.Password)
 	address := fmt.Sprintf("%s:%s", config.Db.Host, config.Db.Port)
@@ -62,4 +62,6 @@ func (c *connectionDatabase) Close() {
 		return
 	}
 	sqlDB.Close()
-}
+}*/
+
+

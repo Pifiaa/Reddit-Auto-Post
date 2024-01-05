@@ -1,0 +1,30 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=$${database.password}
+      - MYSQL_DATABASE=$${database.name}
+      - MYSQL_USER=$${database.username}
+      - MYSQL_PASSWORD=$${database.password}
+      - MYSQL_PORT=$${database.port}
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysqlDB:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql
+      - PMA_USER=$${database.username}
+      - PMA_PASSWORD=$${database.password}
+    ports:
+      - '8080:80'
+    depends_on:
+      - mysql
+volumes:
+  mysqlDB:    

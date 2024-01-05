@@ -1,15 +1,12 @@
 package handler
 
 import (
-	"RedditAutoPost/internal/database/models/credentials"
-	"RedditAutoPost/internal/services"
-	"fmt"
-	"net/http"
-	"reflect"
+	"RedditAutoPost/pkg/database/models/credentials"
 
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 )
 
+/*
 func GetCredentials(c *gin.Context) {
 	redditCredential, err := services.GetCredentials()
 	if err != nil {
@@ -53,4 +50,15 @@ func validateFields(credentials interface{}) error {
 	}
 
 	return nil
+}*/
+
+func CreateCredential(c *fiber.Ctx) error {
+	var payload *credentials.Credentials
+
+	if err := c.BodyParser(&payload); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"status":  "fail",
+			"message": err.Error(),
+		})
+	}
 }
