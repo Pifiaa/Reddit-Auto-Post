@@ -2,11 +2,15 @@ package main
 
 import (
 	"RedditAutoPost/config"
-	"RedditAutoPost/pkg/server"
+	"RedditAutoPost/internal/server"
+	"log"
 )
 
 func main() {
-	config.InitConfig()
+	err := config.InitConfig()
+	if err != nil {
+		log.Fatalln("Failed to load environment variables! \n", err.Error())
+	}
 
 	server.StartServer()
 }
