@@ -17,14 +17,7 @@ type connectionDatabase struct {
 	Db *gorm.DB
 }
 
-func DatabaseConnect() (Database, error) {
-	// config, err := config.GetConfig()
-	config := config.GetConfig()
-
-	/*if err != nil {
-		log.Fatal("No se ha cargado la configuración de la aplicación")
-	}*/
-
+func DatabaseConnect(config config.Config) (Database, error) {
 	password := getPassword(config.Db.Password)
 	address := fmt.Sprintf("%s:%s", config.Db.Host, config.Db.Port)
 
@@ -36,10 +29,14 @@ func DatabaseConnect() (Database, error) {
 		config.Db.DBName,
 	)
 
+	fmt.Println(dsn)
+
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return nil, fmt.Errorf("falló la conexión a la base de datos: %v", err)
 	}
+
+	fmt.Println("Conexión a la base de datos realizada")
 
 	return &connectionDatabase{Db: db}, nil
 }

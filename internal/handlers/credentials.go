@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"RedditAutoPost/internal/database"
 	"RedditAutoPost/internal/models"
 	"RedditAutoPost/utils"
 
@@ -29,4 +30,8 @@ func CreateCredential(c *fiber.Ctx) error {
 		ClientID:     credentials.ClientID,
 		ClientSecret: credentials.ClientSecret,
 	}
+
+	db := database.Database.GetDb()
+
+	result := db.Create()
 }

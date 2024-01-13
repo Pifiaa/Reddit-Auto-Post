@@ -49,6 +49,8 @@ Este es un comando utilizado para descargar los módulos necesarios para constru
 
 5. [gorm](https://gorm.io/): ORM (Object-Relational Mapping) para Go que simplifica la interacción con bases de datos relacionales a través de operaciones orientadas a objetos.
 
+6. [validator](https://github.com/go-playground/validator/): Libreria para validar structs, valores y variables
+
 ---
 
 ## Estructura de directorios

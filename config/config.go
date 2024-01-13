@@ -50,16 +50,16 @@ var (
 	mu          sync.Mutex
 )
 
-func loadConfig() (err error) {
+func loadConfig() (Config, error) {
 	rootDir, err := getRootDirectory()
 	if err != nil {
-		return
+		return Config{}, err
 	}
 
 	configureViper(rootDir)
 
 	if err = readConfig(); err != nil {
-		return
+		return Config{}, err
 	}
 
 	appConfig = &Config{}
@@ -67,10 +67,10 @@ func loadConfig() (err error) {
 	err = viper.Unmarshal(appConfig)
 
 	if err != nil {
-		return
+		return Config{}, err
 	}
 
-	return
+	return *appConfig, err
 }
 
 func getRootDirectory() (string, error) {
@@ -97,26 +97,23 @@ func readConfig() error {
 	return nil
 }
 
-func InitConfig() (err error) {
+func InitConfig() (Config, error) {
 	mu.Lock()
 	defer mu.Unlock()
 
 	if !initialized {
 		once.Do(func() {
-			err = loadConfig()
+			loadedConfig, err := loadConfig()
 
 			if err != nil {
 				fmt.Println("Error loading config:", err)
 				return
 			}
 
+			appConfig = &loadedConfig
 			initialized = true
 		})
 	}
 
-	return
-}
-
-func GetConfig() *Config {
-	return appConfig
+	return *appConfig, nil
 }

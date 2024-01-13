@@ -1,12 +1,12 @@
 -- +goose Up
 CREATE TABLE Posts (
-    id int NOT NULL AUTO_INCREMENT,
-    title varchar(255) NOT NULL,
-    message varchar(255) NOT NULL,
-    image varchar(255),
-    nsfw boolean,
-    subreddit_id int NOT NULL,
-    create_at timestamp,
+    Id int NOT NULL AUTO_INCREMENT,
+    Title varchar(255) NOT NULL,
+    Message varchar(255) NOT NULL,
+    Image varchar(255),
+    Nsfw boolean,
+    Subreddit_id int NOT NULL,
+    Create_at timestamp,
     PRIMARY KEY(id),
     FOREIGN KEY (subreddit_id) REFERENCES Subreddits(id)
 )
