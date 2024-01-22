@@ -3,6 +3,7 @@ package database
 import (
 	"RedditAutoPost/config"
 	"fmt"
+	"time"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -26,7 +27,7 @@ func DatabaseConnect(config config.Config) (Database, error) {
 		config.Db.User,
 		password,
 		address,
-		config.Db.DBName,
+		config.Db.Name,
 	)
 
 	fmt.Println(dsn)
@@ -36,7 +37,9 @@ func DatabaseConnect(config config.Config) (Database, error) {
 		return nil, fmt.Errorf("falló la conexión a la base de datos: %v", err)
 	}
 
-	fmt.Println("Conexión a la base de datos realizada")
+	currentTime := time.Now().Format("2006-01-02 15:04:05")
+
+	fmt.Printf("[%s] Conexión a la base de datos realizada", currentTime)
 
 	return &connectionDatabase{Db: db}, nil
 }
