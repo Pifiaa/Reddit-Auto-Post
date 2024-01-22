@@ -1,14 +1,8 @@
 package handlers
 
-import (
-	"RedditAutoPost/internal/database"
-	"RedditAutoPost/internal/models"
-	"RedditAutoPost/utils"
+import "github.com/gofiber/fiber/v2"
 
-	"github.com/gofiber/fiber/v2"
-)
-
-func CreateCredential(c *fiber.Ctx) error {
+/*func CreateCredential(c *fiber.Ctx) error {
 	var credentials *models.CreateCredentials
 
 	err := c.BodyParser(&credentials)
@@ -34,4 +28,20 @@ func CreateCredential(c *fiber.Ctx) error {
 	db := database.Database.GetDb()
 
 	result := db.Create()
+}
+*/
+
+type ApiParameters struct {
+	Crede
+}
+
+func CreateCredential(c *fiber.Ctx) error {
+	credential := []{}
+
+	if err := c.QueryParser(&credential); err != nil {
+		return err
+	}
+
+
+	return nil
 }
