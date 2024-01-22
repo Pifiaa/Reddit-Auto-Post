@@ -2,6 +2,14 @@
 
 ---
 
+- Tabla de contenidos 
+  - [Descripción](#descripción)
+  - [Requerimientos de la aplicación](#requerimientos-de-la-aplicación)
+  - [Inicializar la aplicación localmente](#inicializar-la-aplicación-localmente)
+    - [Paquetes y Herramientas Instalados](#paquetes-y-herramientas-instalados)
+  - [Estructura de directorios](#estructura-de-directorios)
+  - [Endpoints](#endpoints)
+---
 ## Descripción
 Proyecto creado con el propósito de automatizar publicaciones en Reddit, agilizando la gestión de contenidos con facilidad y eficacia. Simplifica la tarea de programar y realizar publicaciones en la plataforma Reddit. Esta herramienta ofrece una solución eficiente para gestionar y programar publicaciones, mejorando la experiencia de los usuarios en la plataforma y optimizando el flujo de trabajo en la administración de contenido.
 
@@ -10,7 +18,6 @@ Proyecto creado con el propósito de automatizar publicaciones en Reddit, agiliz
 > Ettolini - 2023
 
 ---
-
 ## Requerimientos de la aplicación
 1. Instalar y configurar git
 - [Descargar Git](https://git-scm.com/downloads)
@@ -56,30 +63,38 @@ Este es un comando utilizado para descargar los módulos necesarios para constru
 ## Estructura de directorios
 ```bash
 REDDIT-AUTO-POST
-├── api
-│   ├── handler
-│   │   ├── post.go
-│   │   └── token.go
-│   ├── routes
-│   │   └── router.go
-│   └── app.go
-│
 ├── cmd
 │   └── app 
 │       └── main.go
-│
+│   
 ├── config
-│   └── config.go
-│
+│   └── config.go 
+│   
 ├── internal
-│   └── database
-│       ├── migration
-│       │   ├── 20231211134531_subreddits.sql
-│       │   ├── 20231211134759_posts.sql
-│       │   └── 20231212124636_redditcredentials.sql
-│       └── database.go
-│
+│   ├── database
+│   │   └── database.go
+│   │
+│   ├── handlers
+│   │   └── credentials.go
+│   │
+│   ├── migrations
+│   │
+│   ├── models
+│   │   ├── credentials.go
+│   │   ├── post.go
+│   │   ├── subreddit.go
+│   │   └── token.go
+│   │
+│   └── server    
+│       ├── routes
+│       │   └── routes.go
+│       └── server.go
+│   
+├── utils
+│   └── validator.go 
+│   
 ├── config.yml
+├── docker-compose.yml
 ├── go.mod
 ├── go.sum
 ├── Makefile
