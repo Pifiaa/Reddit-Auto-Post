@@ -30,7 +30,10 @@ func SetupRoutes(app *fiber.App, micro *fiber.App) {
 		router.Post("/")
 	})*/
 
-	micro.Route("/credential", func(router fiber.Router) {
+	micro.Route("/credentials", func(router fiber.Router) {
 		router.Post("/", handlers.CreateCredential)
+		/*router.Get("/", handlers.CreateCredential)
+		router.Put("/", handlers.CreateCredential)
+		router.Delete("/", handlers.CreateCredential)*/
 	})
 }

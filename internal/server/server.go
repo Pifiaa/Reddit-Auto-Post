@@ -1,6 +1,6 @@
 package server
 
-import (
+/*import (
 	"RedditAutoPost/config"
 	"RedditAutoPost/internal/server/routes"
 	"fmt"
@@ -14,7 +14,7 @@ import (
 	"github.com/schollz/progressbar/v3"
 )
 
-func StartServer() {
+func StartServer(config config.Config) {
 	// Crear un canal para gestionar las señales de apagado
 	shutdown := make(chan os.Signal, 1)
 	signal.Notify(shutdown, syscall.SIGINT, syscall.SIGTERM)
@@ -22,18 +22,19 @@ func StartServer() {
 	// Inicializar la barra de progreso
 	bar := initializeProgressBar()
 
-	// Start the Fiber server
-	app := startFiberServer()
+	// Iniciar el servidor Fiber
+	app := startFiberServer(config)
 
-	// Update progress bar until server is ready
+	// Actualizar la barra de progreso hasta que el servidor esté listo
 	updateProgressBar(bar)
 
-	fmt.Println("\nServidor Fiber inicializado!")
+	currentTime := time.Now().Format("2006-01-02 15:04:05")
+	fmt.Printf("[%s] Servidor Fiber inicializado!", currentTime)
 
-	// Block until the server is shut down
+	// Bloquear hasta que se apague el servidor
 	<-shutdown
 
-	// Gracefully shut down the Fiber server
+	// Apagar correctamente el servidor Fiber
 	shutdownFiberServer(app)
 }
 
@@ -51,7 +52,7 @@ func initializeProgressBar() *progressbar.ProgressBar {
 	)
 }
 
-func startFiberServer() *fiber.App {
+func startFiberServer(config config.Config) *fiber.App {
 	app := fiber.New()
 	micro := fiber.New()
 
@@ -60,15 +61,14 @@ func startFiberServer() *fiber.App {
 		panic("Error al crear la instancia de Fiber")
 	}
 
-	// Custom middleware to track routes
+	// Middleware personalizado para el seguimiento de rutas
 	trackRoutes(app)
 
 	// Configura de rutas
 	routes.SetupRoutes(app, micro)
 
-	// Run Fiber server in a goroutine
+	// Ejecutar el servidor Fiber en una goroutine
 	go func() {
-		config := config.GetConfig()
 		port := fmt.Sprintf(":%s", config.Server.Port)
 
 		// Intenta iniciar el servidor en el puerto 3000
@@ -92,16 +92,17 @@ func trackRoutes(app *fiber.App) {
 
 func updateProgressBar(bar *progressbar.ProgressBar) {
 	for i := 0; i < 100; i++ {
-		time.Sleep(50 * time.Millisecond) // Simulate server startup delay
+		time.Sleep(50 * time.Millisecond) // Simular el retraso en el arranque del servidor
 		bar.Add(1)
 	}
 }
 
 func shutdownFiberServer(app *fiber.App) {
-	// Gracefully shut down the Fiber server
+	// Apagar correctamente el servidor Fiber
 	err := app.Shutdown()
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("\nServidor cerrado...")
 }
+*/
