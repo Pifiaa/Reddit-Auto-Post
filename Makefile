@@ -13,7 +13,7 @@ GOOS_WINDOWS=windows
 
 # Rutas
 CMD_DIR=./cmd/app
-MIGRATION_DIR=./internal/database/migration
+MIGRATION_DIR=./internal/migration
 
 # Archivo principal
 MAIN_FILE=main.go
