@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE TABLE Posts (
     Id int NOT NULL AUTO_INCREMENT,
     Title varchar(255) NOT NULL,
@@ -10,11 +11,10 @@ CREATE TABLE Posts (
     PRIMARY KEY(id),
     FOREIGN KEY (subreddit_id) REFERENCES Subreddits(id)
 )
--- +goose StatementBegin
 -- +goose StatementEnd
 
 -- +goose Down
-DROP TABLE IF EXISTS Posts
 -- +goose StatementBegin
+DROP TABLE IF EXISTS Posts
 -- +goose StatementEnd
 
