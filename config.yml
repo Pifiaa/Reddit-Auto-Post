@@ -2,13 +2,13 @@ app:
   name: reddit-auto-post
 
 server:
-  host: localhost
+  host: 127.0.0.1
   port: 8000
 
-database:
+db:
   host: 127.0.0.1
   port: 3306
-  username: root
+  user: root
   password: 
   name: test
 

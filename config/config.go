@@ -32,7 +32,7 @@ type (
 		Port     string `mapstructure:"Port"`
 		User     string `mapstructure:"User"`
 		Password string `mapstructure:"Password"`
-		DBName   string `mapstructure:"DBName"`
+		Name     string `mapstructure:"Name"`
 		SSLMode  string `mapstructure:"SSLMode"`
 		TimeZone string `mapstructure:"TimeZone"`
 	}
@@ -57,15 +57,12 @@ func loadConfig() (Config, error) {
 	}
 
 	configureViper(rootDir)
-
 	if err = readConfig(); err != nil {
 		return Config{}, err
 	}
 
 	appConfig = &Config{}
-
 	err = viper.Unmarshal(appConfig)
-
 	if err != nil {
 		return Config{}, err
 	}
@@ -75,7 +72,6 @@ func loadConfig() (Config, error) {
 
 func getRootDirectory() (string, error) {
 	dir, err := os.Getwd()
-
 	if err != nil {
 		return "", fmt.Errorf("Error al obtener el directorio actual: %w", err)
 	}
